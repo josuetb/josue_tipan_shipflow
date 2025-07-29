@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.*
 class PackageController(
     private val packageService: PackageService
 ) {
+    @ExceptionHandler(IllegalArgumentException::class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    fun handleIllegalArgument(ex: IllegalArgumentException): Map<String, String> =
+        mapOf("error" to (ex.message ?: "Bad request"))
 
     @PostMapping
     fun createPackage(@RequestBody request: PackageRegisterPayload): ResponseEntity<PackageRegisterResponse> {
